@@ -1,6 +1,6 @@
 ## 仿蜜雪冰城系统
 
-参考苍穹外卖，跳过微信支付(无商家微信)
+参考苍穹外卖，跳过微信支付(无商家微信)，增加了AI客服功能
 
 技术栈: `SpringBoot` `MyBatis` `Redis` `MySQL` `Nginx` `SpringCache` `SpringTask` `WebSocket` `Vue` `Maven` `Uni-app`
 
@@ -24,7 +24,7 @@
 2.在idea打开`mxbc`文件夹
 
 3.在`sky-server/src/main/resources/application-dev.yml`中修改数据库等配置信息
-
+科大讯飞的api需要自己申请
 
 
 ### 前端部署
