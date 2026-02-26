@@ -6,16 +6,6 @@
 
 ![avator](./assets/00.png)
 
-![avator](./assets/01.png)
-
-![avator](./assets/02.png)
-
-![avator](./assets/03.png)
-
-![avator](./assets/04.png)
-
-![avator](./assets/07.png)
-
 
 ### 后端部署
 
