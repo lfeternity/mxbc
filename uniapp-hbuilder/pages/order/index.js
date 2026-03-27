@@ -71,7 +71,7 @@ export default {
 			// styleType: 'button',
 			textTip: '',
 			showConfirm: false,
-			phoneData: '15200000001',
+			phoneData: '13800000000',
 			toDate: null,
 			tomorrowStart: null,
 			newDate: null,

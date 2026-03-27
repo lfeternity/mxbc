@@ -1,111 +1,165 @@
-## 仿蜜雪冰城系统
+# 蜜雪冰城点单系统（MXBC）
 
-参考苍穹外卖，跳过微信支付(无商家微信)，增加了AI客服功能
+基于「苍穹外卖」二次开发的外卖点单系统，包含：
 
-技术栈: `SpringBoot` `MyBatis` `Redis` `MySQL` `Nginx` `SpringCache` `SpringTask` `WebSocket` `Vue` `Maven` `Uni-app`
+- 管理端（Web）
+- 用户端（小程序/uni-app）
+- 后端服务（Spring Boot）
+- AI 客服能力（需自行配置第三方 API）
 
-![avator](./assets/00.png)
+> 说明：当前仓库中的示例数据已做脱敏处理；支付流程为演示版本（非完整商用支付流程）。
 
+![preview](./assets/00.png)
 
-### 后端部署
+## 项目特点
 
-1.运行`sky_take_out.sql`脚本
+- 管理端支持菜品、套餐、订单、员工等基础管理
+- 用户端支持下单、历史订单、地址管理等流程
+- 后端支持 JWT 鉴权、定时任务、WebSocket 推送
+- 接入 AI 客服（基于科大讯飞接口，自行申请配置）
 
-2.在idea打开`mxbc`文件夹
+## 技术栈
 
-3.在`sky-server/src/main/resources/application-dev.yml`中修改数据库等配置信息
-科大讯飞的api需要自己申请
+- 后端：`Spring Boot` `MyBatis` `MySQL` `Redis` `Maven` `WebSocket` `Spring Cache` `Spring Task`
+- 前端管理端：`Vue2` `TypeScript` `Element UI` `Vue CLI`
+- 小程序端：`uni-app` / 微信小程序
 
+## 目录结构
 
-### 前端部署
-
-1.在idea打开`mxbc-frontend`文件夹
-
-2.安装yarn(如果没有)
-
-```shell
-npm install yarn -g
+```text
+.
+├─mxbc/                  # 后端工程（Maven 多模块）
+│  ├─sky-server/         # 启动模块
+│  ├─sky-common/
+│  └─sky-pojo/
+├─mxbc-frontend/         # 管理端前端（Vue2 + TS）
+├─uniapp-hbuilder/       # uni-app 项目
+├─mp-weixin/             # 微信小程序构建产物/工程
+├─assets/                # 文档图片
+└─sky_take_out.sql       # 数据库初始化脚本
 ```
 
-3.切换淘宝镜像源
+## 环境要求
 
-```shell
-yarn config set registry https://registry.npmmirror.com
+- JDK：`1.8+`（推荐 8 或 11）
+- Maven：`3.8+`
+- MySQL：`8.0+`
+- Redis：`6+`
+- Node.js：推荐 `16.x`（Vue2 + TS3 老项目，Node 过高版本可能出现类型兼容问题）
+- Yarn：`1.x`（可选，推荐与本项目历史环境一致）
+
+## 快速启动
+
+### 1. 初始化数据库
+
+执行根目录 SQL 脚本：
+
+```sql
+source sky_take_out.sql;
 ```
 
-4.禁用SSL证书验证
+### 2. 启动后端
 
-```shell
-yarn config set strict-ssl false
+1. 打开目录 `mxbc`
+2. 修改配置文件：
+   `mxbc/sky-server/src/main/resources/application-dev.yml`
+3. 填写以下配置项：
+   - MySQL：`sky.datasource.*`
+   - Redis：`sky.redis.*`
+   - OSS：`sky.alioss.*`（可选）
+   - 微信：`sky.wechat.*`（如需相关能力）
+   - AI：`sky.ai.*`（科大讯飞接口，自行申请）
+
+启动方式（二选一）：
+
+```bash
+# 方式1：IDEA 直接运行 SkyApplication
+# 方式2：命令行
+cd mxbc
+mvn -pl sky-server -am spring-boot:run
 ```
 
-5.增加yarn超时时间
+默认端口：`8080`
 
-```shell
-yarn config set network-timeout 600000
-```
+### 3. 启动管理端前端
 
-6.安装依赖
+1. 打开目录 `mxbc-frontend`
+2. 安装依赖
+3. 配置 `.env.development`
+4. 启动开发服务
 
-```shell
+```bash
+cd mxbc-frontend
 yarn install
-```
-
-7.修改配置
-
-.env.development开发环境
-
-```js
-# Base api
-VUE_APP_BASE_API = '/api'
-
-# vue-cli uses the VUE_CLI_BABEL_TRANSPILE_MODULES environment variable,
-# to control whether the babel-plugin-dynamic-import-node plugin is enabled.
-# It only does one thing by converting all import() to require().
-# This configuration can significantly increase the speed of hot updates,
-# when you have a large number of pages.
-# Detail:  https://github.com/vuejs/vue-cli/blob/dev/packages/@vue/babel-preset-app/index.js
-
-NODE_ENV = 'development'
-VUE_APP_NODE_ENV = 'dev'
-
-//后端服务的地址
-VUE_APP_URL = 'http://localhost:8080/admin'
-
-VUE_APP_SOCKET_URL = 'ws://localhost:8080/ws/'
-
-VUE_CLI_BABEL_TRANSPILE_MODULES = true
-# 删除权限 true/有
-VUE_APP_DELETE_PERMISSIONS = true
-
-```
-
-8.运行
-
-```shell
 yarn serve
 ```
 
-### 微信小程序快速启动
+`.env.development` 关键配置示例：
 
-1.下载微信开发者工具
+```env
+VUE_APP_BASE_API='/api'
+NODE_ENV='development'
+VUE_APP_NODE_ENV='dev'
+VUE_APP_URL='http://localhost:8080/admin'
+VUE_APP_SOCKET_URL='ws://localhost:8080/ws/'
+VUE_CLI_BABEL_TRANSPILE_MODULES=true
+VUE_APP_DELETE_PERMISSIONS=true
+```
 
-2.获取个人小程序Appid
+### 4. 微信小程序（mp-weixin）
 
-3.将mp-weixin导入微信开发者工具，填写自己的Appid
+1. 下载微信开发者工具
+2. 获取自己的小程序 `AppID`
+3. 导入 `mp-weixin` 目录
+4. 按需修改后端接口地址
+5. 真机调试需在小程序后台配置合法域名
 
-4.设置->安全->开放端口
+### 5. uni-app（uniapp-hbuilder）
 
-5.在common/vendor.js中配置baseUrl
+1. 使用 HBuilder X 打开 `uniapp-hbuilder`
+2. 在 `manifest.json` 配置小程序 `AppID`
+3. 配置微信开发者工具路径
+4. 运行到微信小程序
 
-6.若想真机调试，在微信小程序平台配置合法域名
+## 常见问题
 
-### 小程序项目部署
+### 1. 前端安装/构建时报大量 TypeScript 类型错误
 
-1.在HBuilder X导入uniapp-hbuilder
+建议使用 `Node 16.x + Yarn 1.x`，并清理后重装依赖：
 
-2.在manifest.json配置微信小程序Appid
+```bash
+cd mxbc-frontend
+rm -rf node_modules
+yarn install
+```
 
-3.在工具->设置->运行配置->微信开发者工具路径中，选择具体的安装路径
+Windows PowerShell 可用：
 
-4.运行到微信小程序
+```powershell
+Remove-Item -Recurse -Force node_modules
+yarn install
+```
+
+### 2. 后端启动报数据库连接失败
+
+优先检查 `application-dev.yml` 中：
+
+- `sky.datasource.host`
+- `sky.datasource.port`
+- `sky.datasource.database`
+- `sky.datasource.username`
+- `sky.datasource.password`
+
+### 3. AI 客服不可用
+
+请确认 `sky.ai.hostUrl/domain/appid/apiSecret/apiKey` 均已填写，并且网络可访问对应服务。
+
+## 安全与开源说明
+
+- 仓库中的示例数据为演示用途，已进行脱敏
+- 请勿在开源仓库提交真实手机号、身份证号、密钥、回调公网地址
+- 生产环境请更换 JWT 密钥、默认密码与所有第三方凭据
+
+## License
+
+本项目使用仓库根目录中的 [LICENSE](./LICENSE)。

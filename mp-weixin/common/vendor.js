@@ -1,4 +1,4 @@
-(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
+﻿(global["webpackJsonp"] = global["webpackJsonp"] || []).push([["common/vendor"],{
 
 /***/ 1:
 /*!************************************************************!*\
@@ -4250,7 +4250,7 @@ var _index = __webpack_require__(/*! ../../utils/index.js */ 29);function _inter
   },
   created: function created() {
     // 
-    // this.phoneData=splitMobile('15200000001')
+    // this.phoneData=splitMobile('13800000000')
 
   },
   onShow: function onShow() {
@@ -4802,7 +4802,7 @@ var _index = __webpack_require__(/*! ../../utils/index.js */ 29);function _inter
     },
     // // 电话号码拨打
     // call(){
-    // 	const phone = '15200000001'
+    // 	const phone = '13800000000'
     // call(this.phoneData)
     // }
     disabledScroll: function disabledScroll() {
@@ -21878,7 +21878,7 @@ var _default = {
       styleType: 'button',
       textTip: '',
       showConfirm: false,
-      phoneData: '15200000001',
+      phoneData: '13800000000',
       toDate: null,
       tomorrowStart: null,
       newDate: null,

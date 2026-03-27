@@ -291,7 +291,7 @@ var _index = __webpack_require__(/*! @/utils/index.js */ 29);function _interopRe
       psersonUrl: '../../static/btn_waiter_sel.png',
       nickName: '',
       gender: '0',
-      phoneNumber: '18500557668',
+      phoneNumber: '13800000001',
       recentOrdersList: [],
       sumOrder: {
         amount: 0,

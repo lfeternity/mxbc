@@ -4,9 +4,9 @@ sky:
     host: localhost
     port: 3306
     database: sky_take_out
-    username:
-    password:
-
+    username: 
+    password: 
+ 
   alioss:
     endpoint:
     access-key-id:
@@ -21,8 +21,8 @@ sky:
   wechat:
     appid:
     secret:
-    notifyUrl: http://713b8e1.r33.cpolar.top/notify/paySuccess
-    refundNotifyUrl: http://713b8e1.r33.cpolar.top/notify/refundSuccess
+    notifyUrl: http://example.com/notify/paySuccess
+    refundNotifyUrl: http://example.com/notify/refundSuccess
 
   ai: #科大讯飞的api
     hostUrl:
